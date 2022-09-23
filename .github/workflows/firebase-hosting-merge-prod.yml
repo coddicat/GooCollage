@@ -3,27 +3,19 @@ name: Deploy to Prod on merge
   push:
     branches:
       - release
-    inputs:
-      deployArgs:
-        description: What to deploy
-        type: choice
-        options:
-          - deploy
-          - deploy --only hosting
-          - deploy --only functions
-        required: true
-        default: deploy
   workflow_dispatch:
     inputs:
       deployArgs:
         description: What to deploy
         type: choice
         options:
-          - deploy
-          - deploy --only hosting
-          - deploy --only functions
+          - --message all
+          - --only hosting
+          - --only functions
+          - --only firestore
+          - --only storage
         required: true
-        default: deploy
+        default: --message all
 jobs:
   build:
     name: Build
@@ -64,7 +56,7 @@ jobs:
       - name: Deploy to Firebase
         uses: w9jds/firebase-action@master
         with:
-          args: ${{ github.event.inputs.deployArgs }}
+          args: deploy ${{ github.event.inputs.deployArgs }}
         env:
           GCP_SA_KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_GOOCOLLAGE }}
           PROJECT_ID: production

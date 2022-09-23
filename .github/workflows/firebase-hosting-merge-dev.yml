@@ -9,13 +9,13 @@ name: Deploy to Dev on merge
         description: What to deploy
         type: choice
         options:
-          - --except storage
+          - --message all
           - --only hosting
           - --only functions
           - --only firestore
           - --only storage
-        required: false
-        default:
+        required: true
+        default: --message all
 jobs:
   build:
     name: Build
@@ -25,7 +25,6 @@ jobs:
       GOOGLE_CONFIG: ${{ secrets.GOOGLE_CONFIG }}
       FIREBASE_CONFIG: ${{ secrets.FIREBASE_CONFIG }}
     steps:
-      - run: echo '${{ github.event.inputs.deployArgs }}'
       - name: Checkout Repo
         uses: actions/checkout@v2
       - name: Install Dependencies
