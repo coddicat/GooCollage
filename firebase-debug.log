@@ -1,0 +1,37 @@
+[debug] [2022-09-23T17:36:41.423Z] ----------------------------------------------------------------------
+[debug] [2022-09-23T17:36:41.426Z] Command:       /Users/shlomo/.nvm/versions/node/v16.16.0/bin/node /Users/shlomo/.nvm/versions/node/v16.16.0/bin/firebase deploy --only functions
+[debug] [2022-09-23T17:36:41.427Z] CLI Version:   11.9.0
+[debug] [2022-09-23T17:36:41.427Z] Platform:      darwin
+[debug] [2022-09-23T17:36:41.427Z] Node Version:  v16.16.0
+[debug] [2022-09-23T17:36:41.429Z] Time:          Fri Sep 23 2022 20:36:41 GMT+0300 (Israel Daylight Time)
+[debug] [2022-09-23T17:36:41.429Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2022-09-23T17:36:41.500Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2022-09-23T17:36:41.500Z] > authorizing via signed-in user (coddicat@gmail.com)
+[debug] [2022-09-23T17:36:41.501Z] [iam] checking project enqueuecard for permissions ["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]
+[debug] [2022-09-23T17:36:41.502Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/enqueuecard:testIamPermissions [none]
+[debug] [2022-09-23T17:36:41.503Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/enqueuecard:testIamPermissions x-goog-quota-user=projects/enqueuecard
+[debug] [2022-09-23T17:36:41.503Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/enqueuecard:testIamPermissions {"permissions":["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]}
+[debug] [2022-09-23T17:36:41.901Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/enqueuecard:testIamPermissions 200
+[debug] [2022-09-23T17:36:41.901Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/enqueuecard:testIamPermissions {"permissions":["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]}
+[debug] [2022-09-23T17:36:41.902Z] >>> [apiv2][query] POST https://iam.googleapis.com/v1/projects/enqueuecard/serviceAccounts/enqueuecard@appspot.gserviceaccount.com:testIamPermissions [none]
+[debug] [2022-09-23T17:36:41.902Z] >>> [apiv2][body] POST https://iam.googleapis.com/v1/projects/enqueuecard/serviceAccounts/enqueuecard@appspot.gserviceaccount.com:testIamPermissions {"permissions":["iam.serviceAccounts.actAs"]}
+[debug] [2022-09-23T17:36:42.441Z] <<< [apiv2][status] POST https://iam.googleapis.com/v1/projects/enqueuecard/serviceAccounts/enqueuecard@appspot.gserviceaccount.com:testIamPermissions 200
+[debug] [2022-09-23T17:36:42.441Z] <<< [apiv2][body] POST https://iam.googleapis.com/v1/projects/enqueuecard/serviceAccounts/enqueuecard@appspot.gserviceaccount.com:testIamPermissions {"permissions":["iam.serviceAccounts.actAs"]}
+[info] 
+[info] === Deploying to 'enqueuecard'...
+[info] 
+[info] i  deploying functions 
+[info] Running command: npm --prefix functions install
+[info] Running command: npm --prefix functions run build
+[info] ✔  functions: Finished running predeploy script. 
+[debug] [2022-09-23T17:36:53.641Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/enqueuecard [none]
+[debug] [2022-09-23T17:36:54.113Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/enqueuecard 200
+[debug] [2022-09-23T17:36:54.113Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/enqueuecard {"projectId":"enqueuecard","projectNumber":"169712293108","displayName":"EnqueueCard","name":"projects/enqueuecard","resources":{"hostingSite":"enqueuecard","realtimeDatabaseInstance":"enqueuecard","storageBucket":"enqueuecard.appspot.com","locationId":"us-central"},"state":"ACTIVE","etag":"1_5ca8d3f9-0f4f-4db7-b8f0-f21bc907203c"}
+[info] i  functions: ensuring required API cloudfunctions.googleapis.com is enabled... 
+[info] i  functions: ensuring required API cloudbuild.googleapis.com is enabled... 
+[info] i  artifactregistry: ensuring required API artifactregistry.googleapis.com is enabled... 
+[debug] [2022-09-23T17:36:54.116Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/enqueuecard/services/cloudfunctions.googleapis.com [none]
+[debug] [2022-09-23T17:36:54.119Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/enqueuecard/services/runtimeconfig.googleapis.com [none]
+[debug] [2022-09-23T17:36:54.120Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/enqueuecard/services/cloudbuild.googleapis.com [none]
+[debug] [2022-09-23T17:36:54.122Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/enqueuecard/services/artifactregistry.googleapis.com [none]
