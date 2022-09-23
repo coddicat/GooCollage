@@ -1,0 +1,103 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isAlbumOwner(albumId, uid) {
+    	let album = get(/databases/$(database)/documents/albums/$(albumId)).data;
+    	return album.uid == uid;
+    }
+    function getAccess(albumId, uid) {
+    	let access = get(/databases/$(database)/documents/public/$(albumId)/accesses/$(uid)).data;
+      return access;
+    }
+		function hasAccess(albumId) {
+    	let public = get(/databases/$(database)/documents/public/$(albumId)).data;
+      return public.status &&
+      	(public.password == false
+         || !('password' in public)
+         || (request.auth != null
+          	&& getAccess(albumId, request.auth.uid).version == public.version));
+    }
+		function allowReadAlbum(albumId) {
+    	return (request.auth != null && isAlbumOwner(albumId, request.auth.uid))
+      	|| hasAccess(albumId);
+    }
+    function verifyFields(data, required, optional) {
+      let allAllowedFields = required.concat(optional);
+      return data.keys().hasAll(required)
+        && data.keys().hasOnly(allAllowedFields);
+    }
+		// function diffHasOnly(fields) {
+		// 	return request.resource.data.diff(resource.data).affectedKeys().hasOnly(fields)
+		// }
+
+		match /public/{albumId} {
+			allow read; //anyone
+      allow create: if request.auth != null
+        && isAlbumOwner(albumId, request.auth.uid);
+      allow update: if request.auth != null
+        && isAlbumOwner(albumId, request.auth.uid);
+      allow delete: if request.auth != null
+        && isAlbumOwner(albumId, request.auth.uid);
+
+      match /accesses/{uid} {
+      	allow read: if request.auth != null
+        	&& uid == request.auth.uid;
+      }
+    }
+
+    match /users/{uid} {
+      allow read: if request.auth != null
+        && uid == request.auth.uid;
+      allow update: if request.auth != null
+      	&& uid == request.auth.uid
+        && request.resource.data.sub == resource.data.sub
+        && verifyFields(request.resource.data, ['sub'], ['albumId','albums','revoked']);
+
+      match /albums/{albumId} {
+      	allow read: if request.auth != null
+        	&& uid == request.auth.uid;
+        allow create, update: if request.auth != null
+					&& uid == request.auth.uid
+          && verifyFields(request.resource.data, ['name', 'owner', 'created'], []);
+        allow delete: if request.auth != null
+					&& uid == request.auth.uid;
+      }
+    }
+
+    match /cache/{albumId} {
+      allow read: if allowReadAlbum(albumId);
+      allow delete: if request.auth != null
+      	&& isAlbumOwner(albumId, request.auth.uid);
+    }
+
+    match /albums/{albumId} {
+      allow read: if allowReadAlbum(albumId);
+
+      allow create: if request.auth != null
+      	&& request.resource.data.uid == request.auth.uid
+        && verifyFields(request.resource.data, ['uid', 'name'], ['created','columns','rows','fit','interval','orientation','randomGridOrder','transition']);
+
+      allow update: if request.auth != null
+      	&& resource.data.uid == request.auth.uid
+      	&& request.resource.data.uid == request.auth.uid
+        && verifyFields(request.resource.data, ['uid', 'name'], ['created','columns','rows','fit','interval','orientation','randomGridOrder','transition']);
+
+      allow delete: if request.auth != null
+      	&& resource.data.uid == request.auth.uid;
+
+    	match /secrets/google {
+      	allow read: if request.auth != null
+        	&& isAlbumOwner(albumId, request.auth.uid);
+        allow write: if request.auth != null
+        	&& verifyFields(request.resource.data, ['albumId'], []);
+      }
+
+    	match /secrets/password {
+      	allow read: if request.auth != null
+        	&& isAlbumOwner(albumId, request.auth.uid);
+        allow write: if request.auth != null;
+        	//&& verifyFields(request.resource.data, ['value'], []);
+      }
+		}
+  }
+}

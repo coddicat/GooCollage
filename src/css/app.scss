@@ -1,0 +1,5 @@
+// app global css in SCSS form
+body.desktop .q-focus-helper:before,
+body.desktop .q-focus-helper:after {
+  transition: none !important;
+}

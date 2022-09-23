@@ -1,0 +1,10 @@
+{
+  "apiKey": "AIzaSyDrlk8qWJUUo_llSOjbR5mK_JI8sBX6ZJc",
+  "authDomain": "enqueuecard.firebaseapp.com",
+  "databaseURL": "https://enqueuecard.firebaseio.com",
+  "projectId": "enqueuecard",
+  "storageBucket": "enqueuecard.appspot.com",
+  "messagingSenderId": "169712293108",
+  "appId": "1:169712293108:web:3247d1fca667a376ccbaa1",
+  "measurementId": "G-SXKKDTRPJR"
+}

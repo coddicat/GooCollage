@@ -1,0 +1,13 @@
+{
+  "extends": "@quasar/app-webpack/tsconfig-preset",
+  "compilerOptions": {
+    "baseUrl": ".",
+    // "target": "ES2015",
+    // "moduleResolution": "node",
+    // "module": "commonJs",
+    // "resolveJsonModule": true,
+  },
+  "exclude": [
+    "functions",
+  ]
+}

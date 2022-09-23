@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "outDir": "lib",
+    "target": "ES2015",
+    "moduleResolution": "node",
+    "module": "commonJs",
+    "resolveJsonModule": true,
+  },
+  "include": [
+    "src"
+  ]
+}
