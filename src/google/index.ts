@@ -1,4 +1,4 @@
-import googleConfig from './config.dev.json';//'./config.prod.json'
+import googleConfig from './config.env.json';
 
 const googleScript = document.createElement('script');
 googleScript.setAttribute('src', 'https://accounts.google.com/gsi/client');

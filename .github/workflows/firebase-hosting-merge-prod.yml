@@ -1,0 +1,60 @@
+name: Deploy to Prod on merge
+'on':
+  push:
+    branches:
+      - release
+  workflow_dispatch:
+    inputs:
+      deployArgs:
+        description: What to deploy
+        type: choice
+        options:
+          - deploy
+          - deploy --only hosting
+          - deploy --only functions
+        required: false
+        default: deploy
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    environment: production
+    env:
+      GOOGLE_CONFIG: ${{ secrets.GOOGLE_CONFIG }}
+      FIREBASE_CONFIG: ${{ secrets.FIREBASE_CONFIG }}
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+      - name: Install Dependencies
+        run: npm install
+      - name: Set Google Configs
+        run: echo $GOOGLE_CONFIG > './src/google/config.env.json'
+      - name: Set Firebase Config
+        run: echo $FIREBASE_CONFIG > './src/firebase/config.env.json'
+      - name: Build
+        run: npx quasar build
+      - name: Archive Production Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: dist
+          path: dist
+  deploy:
+    name: Deploy
+    needs: build
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+      - name: Download Artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: dist
+          path: dist
+      - name: Deploy to Firebase
+        uses: w9jds/firebase-action@master
+        with:
+          args: ${{ github.event.inputs.deployArgs }}
+        env:
+          GCP_SA_KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_GOOCOLLAGE }}
+          PROJECT_ID: production

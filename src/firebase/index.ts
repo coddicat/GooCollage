@@ -1,7 +1,7 @@
 import { getAuth, User } from '@firebase/auth';
 import { initializeApp } from 'firebase/app';
 
-import firebaseConfig from './config.dev.json';//'./config.prod.json'
+import firebaseConfig from './config.env.json';
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
