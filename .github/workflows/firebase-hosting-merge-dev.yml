@@ -25,14 +25,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: https://github.com/coddicat/action-functions-deploy
-        with:
-          repoToken: '${{ secrets.GITHUB_TOKEN }}'
-          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_ENQUEUECARD }}'
-          channelId: live
-          projectId: enqueuecard
-
-      - run: npm install
+      # - run: npm install
       # - name: Create SA key
       #   if: ${{ github.event.inputs.deployFunctions }}
       #   run: echo $FIREBASE_SERVICE_ACCOUNT > $HOME/gcloud.json
@@ -43,12 +36,19 @@ jobs:
       #   if: ${{ github.event.inputs.deployFunctions }}
       #   run: npx firebase-tools deploy --project enqueuecard --only functions --json
 
-      - run: echo $GOOGLE_CONFIG > './src/google/config.env.json'
-      - run: echo $FIREBASE_CONFIG > './src/firebase/config.env.json'
-      - run: npx quasar build
-      - uses: FirebaseExtended/action-hosting-deploy@v0
+      # - run: echo $GOOGLE_CONFIG > './src/google/config.env.json'
+      # - run: echo $FIREBASE_CONFIG > './src/firebase/config.env.json'
+      # - run: npx quasar build
+      # - uses: FirebaseExtended/action-hosting-deploy@v0
+      #   with:
+      #     repoToken: '${{ secrets.GITHUB_TOKEN }}'
+      #     firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_ENQUEUECARD }}'
+      #     channelId: live
+      #     projectId: enqueuecard
+
+      - name: Deploy to Firebase
+        uses: w9jds/firebase-action@master
         with:
-          repoToken: '${{ secrets.GITHUB_TOKEN }}'
-          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_ENQUEUECARD }}'
-          channelId: live
-          projectId: enqueuecard
+          args: deploy --only functions
+        env:
+          GCP_SA_KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_ENQUEUECARD }}
