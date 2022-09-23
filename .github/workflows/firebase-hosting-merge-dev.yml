@@ -20,21 +20,28 @@ jobs:
     env:
       GOOGLE_CONFIG: ${{ secrets.GOOGLE_CONFIG }}
       FIREBASE_CONFIG: ${{ secrets.FIREBASE_CONFIG }}
-      FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_ENQUEUECARD }}
-      GOOGLE_APPLICATION_CREDENTIALS: $HOME/gcloud.json
+      # FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_ENQUEUECARD }}
+      # GOOGLE_APPLICATION_CREDENTIALS: $HOME/gcloud.json
     steps:
       - uses: actions/checkout@v2
-      - run: npm install
 
-      - name: Create SA key
-        if: ${{ github.event.inputs.deployFunctions }}
-        run: echo $FIREBASE_SERVICE_ACCOUNT > $HOME/gcloud.json
-      - name: Prepare Deploy Cloud Functions
-        if: ${{ github.event.inputs.deployFunctions }}
-        run: export GOOGLE_APPLICATION_CREDENTIALS=$HOME/gcloud.json
-      - name: Deploy Cloud Functions
-        if: ${{ github.event.inputs.deployFunctions }}
-        run: npx firebase-tools deploy --project enqueuecard --only functions --json
+      - uses: coddicat/action-functions-deploy@v0
+        with:
+          repoToken: '${{ secrets.GITHUB_TOKEN }}'
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_ENQUEUECARD }}'
+          channelId: live
+          projectId: enqueuecard
+
+      - run: npm install
+      # - name: Create SA key
+      #   if: ${{ github.event.inputs.deployFunctions }}
+      #   run: echo $FIREBASE_SERVICE_ACCOUNT > $HOME/gcloud.json
+      # - name: Prepare Deploy Cloud Functions
+      #   if: ${{ github.event.inputs.deployFunctions }}
+      #   run: export GOOGLE_APPLICATION_CREDENTIALS=$HOME/gcloud.json
+      # - name: Deploy Cloud Functions
+      #   if: ${{ github.event.inputs.deployFunctions }}
+      #   run: npx firebase-tools deploy --project enqueuecard --only functions --json
 
       - run: echo $GOOGLE_CONFIG > './src/google/config.env.json'
       - run: echo $FIREBASE_CONFIG > './src/firebase/config.env.json'
