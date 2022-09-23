@@ -23,9 +23,14 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: npm install
-      - name: Run deploy Firebase functions
+
+      - name: Create SA key
         if: ${{ github.event.inputs.deployFunctions }}
-        run: npx firebase deploy --only functions
+        run: echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}' > $HOME/gcloud.json
+      - name: Deploy Cloud Functions
+        if: ${{ github.event.inputs.deployFunctions }}
+        run: export GOOGLE_APPLICATION_CREDENTIALS=$HOME/gcloud.json && npx firebase-tools deploy --only functions --json
+
       - run: echo $GOOGLE_CONFIG > './src/google/config.env.json'
       - run: echo $FIREBASE_CONFIG > './src/firebase/config.env.json'
       - run: npx quasar build
