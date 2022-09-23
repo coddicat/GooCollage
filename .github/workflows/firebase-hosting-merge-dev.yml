@@ -52,3 +52,4 @@ jobs:
           args: deploy --only functions
         env:
           GCP_SA_KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_ENQUEUECARD }}
+          PROJECT_ID: development
