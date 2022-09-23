@@ -14,7 +14,7 @@ name: Deploy to Dev on merge
         required: false
         default: false
 jobs:
-  build_and_deploy_dev:
+  build_and_deploy:
     runs-on: ubuntu-latest
     environment: development
     env:
@@ -26,14 +26,7 @@ jobs:
 
       - name: Deploy Cloud Functions
         if: ${{ github.event.inputs.deployFunctions }}
-        steps:
-          - name: Create SA key
-            run: echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}' > $HOME/gcloud.json
-          - run: export GOOGLE_APPLICATION_CREDENTIALS=$HOME/gcloud.json
-          - name: Use Alias
-            run: npx firebase use development
-          - name: Deploy
-            run: npx firebase-tools deploy --only functions --json
+        run: echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}' > $HOME/gcloud.json && export GOOGLE_APPLICATION_CREDENTIALS=$HOME/gcloud.json && npx firebase use development && npx firebase-tools deploy --only functions --json
 
       - run: echo $GOOGLE_CONFIG > './src/google/config.env.json'
       - run: echo $FIREBASE_CONFIG > './src/firebase/config.env.json'
