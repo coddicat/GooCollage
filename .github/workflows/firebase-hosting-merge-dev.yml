@@ -24,9 +24,12 @@ jobs:
       - uses: actions/checkout@v2
       - run: npm install
 
+      - name: Create SA key
+        if: ${{ github.event.inputs.deployFunctions }}
+        run: echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT_ENQUEUECARD }}' > $HOME/gcloud.json
       - name: Deploy Cloud Functions
         if: ${{ github.event.inputs.deployFunctions }}
-        run: echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT_ENQUEUECARD }}' > $HOME/gcloud.json && export GOOGLE_APPLICATION_CREDENTIALS=$HOME/gcloud.json && npx firebase use development && npx firebase-tools deploy --only functions --json
+        run: export GOOGLE_APPLICATION_CREDENTIALS=$HOME/gcloud.json && npx firebase use development && npx firebase-tools deploy --only functions
 
       - run: echo $GOOGLE_CONFIG > './src/google/config.env.json'
       - run: echo $FIREBASE_CONFIG > './src/firebase/config.env.json'
