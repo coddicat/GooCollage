@@ -1,8 +1,7 @@
 {
   "projects": {
     "production": "goocollage",
-    "development": "enqueuecard",
-    "default": "enqueuecard"
+    "development": "enqueuecard"
   },
   "targets": {},
   "etags": {}
