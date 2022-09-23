@@ -20,13 +20,15 @@ jobs:
     env:
       GOOGLE_CONFIG: ${{ secrets.GOOGLE_CONFIG }}
       FIREBASE_CONFIG: ${{ secrets.FIREBASE_CONFIG }}
+      FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_ENQUEUECARD }}
+      GOOGLE_APPLICATION_CREDENTIALS: $HOME/gcloud.json
     steps:
       - uses: actions/checkout@v2
       - run: npm install
 
       - name: Create SA key
         if: ${{ github.event.inputs.deployFunctions }}
-        run: echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT_ENQUEUECARD }}' > $HOME/gcloud.json
+        run: echo $FIREBASE_SERVICE_ACCOUNT > $HOME/gcloud.json
       - name: Prepare Deploy Cloud Functions
         if: ${{ github.event.inputs.deployFunctions }}
         run: export GOOGLE_APPLICATION_CREDENTIALS=$HOME/gcloud.json
