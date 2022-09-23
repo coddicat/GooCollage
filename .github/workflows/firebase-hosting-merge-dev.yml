@@ -13,6 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: npm install
+      - run: echo ${{ secrets.GOOGLE_CONFIG }}
       - run: npx quasar build
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
