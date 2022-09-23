@@ -29,7 +29,10 @@ jobs:
         run: echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT_ENQUEUECARD }}' > $HOME/gcloud.json
       - name: Prepare Deploy Cloud Functions
         if: ${{ github.event.inputs.deployFunctions }}
-        run: export GOOGLE_APPLICATION_CREDENTIALS=$HOME/gcloud.json && npx firebase use development
+        run: export GOOGLE_APPLICATION_CREDENTIALS=$HOME/gcloud.json
+      - name: Use project
+        if: ${{ github.event.inputs.deployFunctions }}
+        run: npx firebase-tools use development
       - name: Deploy Cloud Functions
         if: ${{ github.event.inputs.deployFunctions }}
         run: npx firebase-tools deploy --only functions
