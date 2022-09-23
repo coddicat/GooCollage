@@ -10,12 +10,12 @@ jobs:
   build_and_deploy_dev:
     runs-on: ubuntu-latest
     environment: development
+    env:
+      GOOGLE_CONFIG: ${{ secrets.GOOGLE_CONFIG }}
+      FIREBASE_CONFIG: ${{ secrets.FIREBASE_CONFIG }}
     steps:
       - uses: actions/checkout@v2
       - run: npm install
-      - env:
-          GOOGLE_CONFIG: ${{ secrets.GOOGLE_CONFIG }}
-          FIREBASE_CONFIG: ${{ secrets.FIREBASE_CONFIG }}
       - run: echo $GOOGLE_CONFIG > './src/google/config.env.json'
       - run: echo $FIREBASE_CONFIG > './src/firebase/config.env.json'
       - run: npx quasar build
