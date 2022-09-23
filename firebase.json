@@ -5,11 +5,7 @@
   },
   "hosting": {
     "public": "dist/spa",
-    "ignore": [
-      "firebase.json",
-      "**/.*",
-      "**/node_modules/**"
-    ],
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
     "rewrites": [
       {
         "source": "**",
@@ -21,7 +17,10 @@
     "rules": "storage.rules"
   },
   "functions": {
-    "predeploy": "npm --prefix functions run build",
+    "predeploy": [
+      "npm --prefix ./functions/ install",
+      "npm --prefix ./functions/ run build"
+    ],
     "source": "functions"
   }
 }
