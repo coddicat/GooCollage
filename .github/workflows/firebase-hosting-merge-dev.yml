@@ -23,19 +23,19 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: npm install
-      - run: echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT_ENQUEUECARD }}'
-      # - name: Create SA key
-      #   if: ${{ github.event.inputs.deployFunctions }}
-      #   run: echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT_ENQUEUECARD }}' > $HOME/gcloud.json
-      # - name: Prepare Deploy Cloud Functions
-      #   if: ${{ github.event.inputs.deployFunctions }}
-      #   run: export GOOGLE_APPLICATION_CREDENTIALS=$HOME/gcloud.json
-      # - name: Use project
-      #   if: ${{ github.event.inputs.deployFunctions }}
-      #   run: npx firebase-tools use development
-      # - name: Deploy Cloud Functions
-      #   if: ${{ github.event.inputs.deployFunctions }}
-      #   run: npx firebase-tools deploy --only functions
+
+      - name: Create SA key
+        if: ${{ github.event.inputs.deployFunctions }}
+        run: echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT_ENQUEUECARD }}' > $HOME/gcloud.json
+      - name: Prepare Deploy Cloud Functions
+        if: ${{ github.event.inputs.deployFunctions }}
+        run: export GOOGLE_APPLICATION_CREDENTIALS=$HOME/gcloud.json
+      - name: Use project
+        if: ${{ github.event.inputs.deployFunctions }}
+        run: npx firebase-tools use development
+      - name: Deploy Cloud Functions
+        if: ${{ github.event.inputs.deployFunctions }}
+        run: npx firebase-tools deploy --only functions --json
 
       - run: echo $GOOGLE_CONFIG > './src/google/config.env.json'
       - run: echo $FIREBASE_CONFIG > './src/firebase/config.env.json'
