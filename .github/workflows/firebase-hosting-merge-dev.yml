@@ -6,6 +6,13 @@ name: Deploy to Dev on merge
   push:
     branches:
       - main
+  workflow_dispatch:
+    inputs:
+      deployFunctions:
+        description: Deploy Firebase function
+        type: boolean
+        required: false
+        default: false
 jobs:
   build_and_deploy_dev:
     runs-on: ubuntu-latest
@@ -16,6 +23,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: npm install
+      - name: Run deploy Firebase functions
+        if: ${{ github.event.inputs.deployFunctions }}
+        run: npx firebase deploy --only functions
       - run: echo $GOOGLE_CONFIG > './src/google/config.env.json'
       - run: echo $FIREBASE_CONFIG > './src/firebase/config.env.json'
       - run: npx quasar build
