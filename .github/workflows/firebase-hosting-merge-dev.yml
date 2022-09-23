@@ -9,13 +9,16 @@ name: Deploy to Dev on merge
         description: What to deploy
         type: choice
         options:
-          - --message all
+          - --except storage
           - --only hosting
           - --only functions
+          - --only firestore
+          - --only storage
         required: false
         default:
 jobs:
   build:
+    if: false
     name: Build
     runs-on: ubuntu-latest
     environment: development
