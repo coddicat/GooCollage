@@ -9,9 +9,11 @@ name: Deploy to Dev on merge
         description: What to deploy
         type: choice
         options:
+          -
           - --only hosting
           - --only functions
         required: false
+        default:
 jobs:
   build:
     name: Build
