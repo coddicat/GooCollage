@@ -3,6 +3,16 @@ name: Deploy to Prod on merge
   push:
     branches:
       - release
+    inputs:
+      deployArgs:
+        description: What to deploy
+        type: choice
+        options:
+          - deploy
+          - deploy --only hosting
+          - deploy --only functions
+        required: true
+        default: deploy
   workflow_dispatch:
     inputs:
       deployArgs:
