@@ -9,7 +9,7 @@ name: Deploy to Dev on merge
         description: What to deploy
         type: choice
         options:
-          -
+          - --message all
           - --only hosting
           - --only functions
         required: false
