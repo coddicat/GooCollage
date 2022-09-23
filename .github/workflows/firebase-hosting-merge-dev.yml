@@ -26,7 +26,7 @@ jobs:
 
       - name: Deploy Cloud Functions
         if: ${{ github.event.inputs.deployFunctions }}
-        run: echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}' > $HOME/gcloud.json && export GOOGLE_APPLICATION_CREDENTIALS=$HOME/gcloud.json && npx firebase use development && npx firebase-tools deploy --only functions --json
+        run: echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT_ENQUEUECARD }}' > $HOME/gcloud.json && export GOOGLE_APPLICATION_CREDENTIALS=$HOME/gcloud.json && npx firebase use development && npx firebase-tools deploy --only functions --json
 
       - run: echo $GOOGLE_CONFIG > './src/google/config.env.json'
       - run: echo $FIREBASE_CONFIG > './src/firebase/config.env.json'
