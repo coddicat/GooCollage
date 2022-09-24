@@ -52,6 +52,7 @@ import copy from 'copy-to-clipboard';
 import { debounce } from 'lodash';
 import { Notify } from 'quasar';
 import AlbumPropsItem from './AlbumPropsItem.vue';
+import notifications from 'src/notifications';
 
 export default defineComponent({
   name: 'AlbumPublicPanel',
@@ -72,7 +73,10 @@ export default defineComponent({
       isPwd: ref(true),
       shared: computed({
         get: (): boolean => store.getPublic?.status == true,
-        set: (shared: boolean) => setPublic(shared),
+        set: async (value: boolean) => {
+          const shared = value && (await notifications.publicAlbum());
+          setPublic(shared);
+        },
       }),
       password: computed({
         get: (): string => store.getPassword ?? '',

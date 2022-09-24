@@ -34,6 +34,7 @@ import { signOut, getAuth } from 'firebase/auth';
 import { Dialog } from 'quasar';
 import AccountSettings from './AccountSettings.vue';
 import { useAlbumStore } from 'src/stores/album-store';
+import { useAuthStore } from 'src/stores/auth-store';
 const auth = getAuth();
 
 export default defineComponent({
@@ -52,8 +53,10 @@ export default defineComponent({
         cancel: true,
       }).onOk(async () => {
         const store = useAlbumStore();
-        store.clearData();
         store.destroy();
+        store.clearData();
+        const authStore = useAuthStore();
+        authStore.destroy();
 
         await signOut(auth);
         this.$router.replace('./login');

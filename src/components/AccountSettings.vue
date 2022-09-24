@@ -131,8 +131,10 @@ export default defineComponent({
             spinnerColor: 'negative',
           });
           const store = useAlbumStore();
-          store.clearData();
           store.destroy();
+          store.clearData();
+          const authStore = useAuthStore();
+          authStore.destroy();
           await this.deleteAccount();
         } finally {
           Loading.hide();

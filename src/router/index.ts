@@ -46,11 +46,11 @@ export default route(function () {
         const auth = getAuth();
 
         const store = useAlbumStore();
-        store.clearData();
         store.destroy();
+        store.clearData();
+        authStore.destroy();
 
         await auth.signOut();
-        await authStore.setFbUser(undefined);
         next({ path: '/login' });
         return;
       }

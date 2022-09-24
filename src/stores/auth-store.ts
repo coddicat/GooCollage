@@ -144,6 +144,25 @@ export const useAuthStore = defineStore('auth', {
       const auth = getAuth();
       const response = await signInAnonymously(auth);
       this.setFbUser(response.user);
+    },
+
+    destroy(): void {
+      try {
+        this.albumList = [];
+        this.fbUser = undefined;
+        this.dbUser = undefined;
+
+        if (!!this.unsub) {
+          this.unsub();
+          this.unsub = undefined;
+        }
+        if (!!this.unsubAlbumList) {
+          this.unsubAlbumList();
+          this.unsubAlbumList = undefined;
+        }
+      } catch (error) {
+        console.error(error);
+      }
     }
   }
 });
