@@ -1,8 +1,8 @@
 name: Deploy to Prod on merge
 'on':
-  push:
-    branches:
-      - release
+  # push:
+  #   branches:
+  #     - release
   workflow_dispatch:
     inputs:
       deployArgs:
