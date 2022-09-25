@@ -8,7 +8,7 @@ import cacheImages from './album-store-cache';
 import callbacks from './album-store-callbacks';
 import syncMediaItems from './album-store-syncMediaItems';
 import { mediaItemMaxHeight, mediaItemMaxWidth } from 'src/consts';
-import { Dialog } from 'quasar';
+import dialogExt from 'src/extensions/dialog-ext';
 const db = getFirestore(firebaseApp);
 
 function getCacheValid(state: AlbumState) {
@@ -155,12 +155,7 @@ export default {
             })) ?? [];
             const cachResult = await cacheImages(state);
             if (!cachResult) {
-              Dialog.create({
-                title: 'Media item loading failed',
-                dark: true,
-                message:
-                  'Some media items from the album could not be downloaded, needed to Sync with Google Album',
-              });
+              dialogExt.obtainMediaItemsFailed();
             }
           } else {
             await syncMediaItems(albumId);

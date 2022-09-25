@@ -29,7 +29,8 @@
 </template>
 <script lang="ts">
 import { mapActions } from 'pinia';
-import { Dialog, Loading } from 'quasar';
+import { Loading } from 'quasar';
+import dialogExt from 'src/extensions/dialog-ext';
 import { useAlbumStore } from 'src/stores/album-store';
 import { defineComponent, ref } from 'vue';
 export default defineComponent({
@@ -47,11 +48,7 @@ export default defineComponent({
         Loading.show();
         const result = await this.submitAccess(this.password);
         if (!result) {
-          Dialog.create({
-            dark: true,
-            title: 'Invalid access',
-            message: 'Wrong password, try again.',
-          });
+          dialogExt.invalidAccess('Wrong password, try again.');
         }
       } finally {
         Loading.hide();

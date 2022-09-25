@@ -60,8 +60,10 @@ import { computed, defineComponent } from 'vue';
 import { useAlbumStore } from 'stores/album-store';
 import { ADD_ALBUM_ID } from 'src/consts';
 import { useAuthStore } from 'src/stores/auth-store';
-import { Dialog, Loading, Notify, QSpinnerGrid } from 'quasar';
+import { Loading, QSpinnerGrid } from 'quasar';
 import { useRouter } from 'vue-router';
+import notifyExt from 'src/extensions/notify-ext';
+import dialogExt from 'src/extensions/dialog-ext';
 
 export default defineComponent({
   name: 'AlbumControlPanel',
@@ -85,58 +87,37 @@ export default defineComponent({
     });
 
     return {
-      deleteAlbum() {
+      async deleteAlbum() {
         if (!store.getAlbumId) {
           return;
         }
 
-        Dialog.create({
-          dark: true,
-          message: `Deletion '${currentAlbumName.value}' album`,
-          title: 'Are you sure?',
-          cancel: true,
-        }).onOk(async () => {
-          if (!store.getAlbumId) {
-            return;
-          }
+        const result = await dialogExt.deleteAlbum(currentAlbumName.value);
+        if (!result) {
+          return;
+        }
 
-          try {
-            Loading.show({
-              message: 'Album deletion.',
-              spinner: QSpinnerGrid,
-              spinnerColor: 'negative',
-            });
-            await store.deleteAlbum();
-            await router.replace('/');
-            Notify.create({
-              message: 'The album has been deleted.',
-              timeout: 2000,
-              position: 'bottom-left',
-              type: 'warning',
-            });
-          } finally {
-            Loading.hide();
-          }
-        });
-      },
-      rename() {
-        Dialog.create({
-          dark: true,
-          title: 'Prompt',
-          message: "Enter the album's display name:",
-          prompt: {
-            model: currentAlbumName.value,
-          },
-          cancel: true,
-        }).onOk(async (name: string): Promise<void> => {
-          await store.renameAlbum(name);
-          Notify.create({
-            message: 'The album has been renamed.',
-            timeout: 2000,
-            position: 'bottom-left',
-            type: 'warning',
+        try {
+          Loading.show({
+            message: 'Album deletion.',
+            spinner: QSpinnerGrid,
+            spinnerColor: 'negative',
           });
-        });
+          await store.deleteAlbum();
+          await router.replace('/');
+          notifyExt.albumDeleted();
+        } finally {
+          Loading.hide();
+        }
+      },
+      async rename() {
+        const result = await dialogExt.renameAlbum(currentAlbumName.value);
+        if (!result.ok) {
+          return;
+        }
+
+        await store.renameAlbum(result.data);
+        notifyExt.albumRenamed();
       },
       async addAlbumToList() {
         if (!store.getAlbumId) {
@@ -147,35 +128,22 @@ export default defineComponent({
           currentAlbumName.value,
           false
         );
-        Notify.create({
-          message: 'The album has been added to your list.',
-          timeout: 2000,
-          position: 'bottom-left',
-          type: 'warning',
-        });
+        notifyExt.albumAdded();
       },
       async removeAlbumFromList() {
         if (!store.getAlbumId) {
           return;
         }
 
-        Dialog.create({
-          dark: true,
-          message: `Removing '${currentAlbumName.value}' album`,
-          title: 'Are you sure?',
-          cancel: true,
-        }).onOk(async () => {
-          if (!store.getAlbumId) {
-            return;
-          }
-          await authStore.removeAlbumFromList(store.getAlbumId);
-          Notify.create({
-            message: 'The album has been removed from your list.',
-            timeout: 2000,
-            position: 'bottom-left',
-            type: 'warning',
-          });
-        });
+        const result = await dialogExt.removeAlbumFromList(
+          currentAlbumName.value
+        );
+        if (!result) {
+          return;
+        }
+
+        await authStore.removeAlbumFromList(store.getAlbumId);
+        notifyExt.albumRemoved();
       },
       inList: computed((): boolean => {
         if (!store.getAlbumId) {

@@ -73,9 +73,10 @@ import {
 } from 'firebase/auth';
 import { mapActions, mapState } from 'pinia';
 import { useAuthStore } from 'stores/auth-store';
-import { Dialog, Loading, QSpinnerGrid } from 'quasar';
+import { Loading, QSpinnerGrid } from 'quasar';
 import googleApp, { getRedirectUrl } from '../google';
 import { getCurrentUser } from '../firebase';
+import dialogExt from 'src/extensions/dialog-ext';
 
 const auth = getAuth();
 
@@ -117,12 +118,9 @@ export default defineComponent({
     }),
     async continuteLogin(code: string, scope: string | undefined) {
       if (!scope || !scope.includes('photoslibrary.readonly')) {
-        Dialog.create({
-          title: 'Access',
-          dark: true,
-          message:
-            "Grant 'View your Google Photos library' access for the application",
-        });
+        dialogExt.invalidAccess(
+          "Grant 'View your Google Photos library' access for the application"
+        );
         return;
       }
 
@@ -133,11 +131,7 @@ export default defineComponent({
         await this.$router.replace({ name: 'Home' });
       } catch (error) {
         console.error(error);
-        Dialog.create({
-          dark: true,
-          title: 'Invalid access',
-          message: 'Something wrong, try again',
-        });
+        dialogExt.invalidAccess();
       }
     },
     async firebaseSignin(
@@ -171,11 +165,7 @@ export default defineComponent({
         const response = await googleApp.signin();
 
         if (!response.code) {
-          Dialog.create({
-            dark: true,
-            title: 'Invalid access',
-            message: 'Something wrong, try again',
-          });
+          dialogExt.invalidAccess();
           return;
         }
 

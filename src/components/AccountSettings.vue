@@ -51,12 +51,13 @@
 </template>
 <script lang="ts">
 import { mapActions, mapState } from 'pinia';
-import { Dialog, Loading, QSpinnerGrid } from 'quasar';
+import { Loading, QSpinnerGrid } from 'quasar';
 import googleApp from 'src/google';
 import { useAuthStore } from 'src/stores/auth-store';
 import { defineComponent } from 'vue';
 import { signOut, getAuth } from 'firebase/auth';
 import { useAlbumStore } from 'src/stores/album-store';
+import dialogExt from 'src/extensions/dialog-ext';
 const auth = getAuth();
 
 export default defineComponent({
@@ -86,11 +87,7 @@ export default defineComponent({
         const response = await googleApp.signin();
 
         if (!response.code) {
-          Dialog.create({
-            dark: true,
-            title: 'Invalid access',
-            message: 'Something wrong, try again',
-          });
+          dialogExt.invalidAccess();
           return;
         }
       } finally {
@@ -98,50 +95,45 @@ export default defineComponent({
       }
     },
     async revokeAccess() {
-      Dialog.create({
-        dark: true,
-        message: 'Revoke google access',
-        title: 'Are you sure?',
-        cancel: true,
-      }).onOk(async () => {
-        try {
-          Loading.show({
-            message: 'Revoking access.',
-            spinner: QSpinnerGrid,
-            spinnerColor: 'negative',
-          });
-          await this.revokeToken();
-        } finally {
-          Loading.hide();
-        }
-      });
+      const result = await dialogExt.revokeAccess();
+      if (!result) {
+        return;
+      }
+
+      try {
+        Loading.show({
+          message: 'Revoking access.',
+          spinner: QSpinnerGrid,
+          spinnerColor: 'negative',
+        });
+        await this.revokeToken();
+      } finally {
+        Loading.hide();
+      }
     },
     async deleteAccountHandler() {
-      Dialog.create({
-        dark: true,
-        message:
-          'All data will be lost forever. Delete this account and all relative data?',
-        title: 'Are you sure?',
-        cancel: true,
-      }).onOk(async () => {
-        try {
-          Loading.show({
-            message: 'Deleting Account.',
-            spinner: QSpinnerGrid,
-            spinnerColor: 'negative',
-          });
-          const store = useAlbumStore();
-          store.destroy();
-          store.clearData();
-          const authStore = useAuthStore();
-          authStore.destroy();
-          await this.deleteAccount();
-        } finally {
-          Loading.hide();
-          await signOut(auth);
-          this.$router.replace('./login');
-        }
-      });
+      const result = await dialogExt.deleteAccount();
+      if (!result) {
+        return;
+      }
+
+      try {
+        Loading.show({
+          message: 'Deleting Account.',
+          spinner: QSpinnerGrid,
+          spinnerColor: 'negative',
+        });
+        const store = useAlbumStore();
+        store.destroy();
+        store.clearData();
+        const authStore = useAuthStore();
+        authStore.destroy();
+        await this.deleteAccount();
+      } finally {
+        Loading.hide();
+        await signOut(auth);
+        this.$router.replace('./login');
+      }
     },
   },
 });

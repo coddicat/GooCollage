@@ -16,7 +16,7 @@
             </q-item-section>
           </q-item>
           <q-separator />
-          <q-item clickable disable>
+          <q-item clickable @click="helpFeedback = true">
             <q-item-section>Help & Feedback</q-item-section>
             <q-item-section side>
               <q-icon name="help"></q-icon>
@@ -26,15 +26,17 @@
       </q-menu>
     </q-btn>
     <AccountSettings v-model="settings"></AccountSettings>
+    <HelpFeedback v-model="helpFeedback"></HelpFeedback>
   </div>
 </template>
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
 import { signOut, getAuth } from 'firebase/auth';
-import { Dialog } from 'quasar';
 import AccountSettings from './AccountSettings.vue';
 import { useAlbumStore } from 'src/stores/album-store';
 import { useAuthStore } from 'src/stores/auth-store';
+import dialogExt from 'src/extensions/dialog-ext';
+import HelpFeedback from './HelpFeedback.vue';
 const auth = getAuth();
 
 export default defineComponent({
@@ -42,30 +44,29 @@ export default defineComponent({
   setup() {
     return {
       settings: ref(false),
+      helpFeedback: ref(false),
     };
   },
   methods: {
-    signout() {
-      Dialog.create({
-        dark: true,
-        message: 'Signing out',
-        title: 'Are you sure?',
-        cancel: true,
-      }).onOk(async () => {
-        const store = useAlbumStore();
-        store.destroy();
-        store.clearData();
-        const authStore = useAuthStore();
-        authStore.destroy();
+    async signout() {
+      const result = await dialogExt.signOut();
+      if (!result) {
+        return;
+      }
 
-        await signOut(auth);
-        this.$router.replace('./login');
-      });
+      const store = useAlbumStore();
+      store.destroy();
+      store.clearData();
+      const authStore = useAuthStore();
+      authStore.destroy();
+
+      await signOut(auth);
+      this.$router.replace('./login');
     },
     signin() {
       this.$router.push('/login');
     },
   },
-  components: { AccountSettings },
+  components: { AccountSettings, HelpFeedback },
 });
 </script>
