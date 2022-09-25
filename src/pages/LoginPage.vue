@@ -1,6 +1,6 @@
 <template>
   <q-page
-    class="login-page window-height window-width row"
+    class="login-page window-width row"
     style="
       justify-content: center;
       align-content: flex-start;
@@ -15,6 +15,7 @@
         margin: 15px 20px 0 20px;
         flex-shrink: 0;
         flex-grow: 0;
+        height: fit-content;
       "
     >
       <div style="margin: 25px">
@@ -58,6 +59,13 @@
         <li>Share the link or qrcode</li>
         <li>Watch in fullscreen mode</li>
       </ul>
+      <div
+        class="row"
+        style="justify-content: space-around; align-items: center"
+      >
+        <img src="~/assets/gooCollage1.gif" style="width: 250px" />
+        <img src="~/assets/gooCollage2.gif" style="height: 250px" />
+      </div>
     </div>
   </q-page>
 </template>

@@ -1,7 +1,7 @@
 <template>
   <q-dialog v-model="model">
     <q-card>
-      <q-card-section class="row">
+      <q-card-section class="row q-mb-none q-pb-none">
         <div class="text-h6">Settings</div>
         <q-space></q-space>
         <q-btn

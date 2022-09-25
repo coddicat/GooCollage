@@ -1,7 +1,7 @@
 <template>
   <q-dialog v-model="model">
     <q-card>
-      <q-card-section class="row">
+      <q-card-section class="row q-mb-none q-pb-none">
         <div class="text-h6">Help & Feedback</div>
         <q-space></q-space>
         <q-btn
@@ -15,13 +15,22 @@
       </q-card-section>
       <q-card-section>
         <p>
-          If you have any questions or issues, please contact our
-          <a href="https://github.com/coddicat/GooCollage/discussions"
-            >Discussions</a
-          >
-          and
-          <a href="https://github.com/coddicat/GooCollage/wiki">Wiki</a>
-          for help, or send us
+          We’re using
+          <a href="https://github.com/coddicat/GooCollage/discussions">
+            Github Discussions
+          </a>
+          as a place to connect with other members of our community. We hope
+          that you:
+          <ul>
+            <li>Ask questions you're wondering about.</li>
+            <li>Share ideas.</li>
+            <li>Engage with other community members.</li>
+            <li>Welcome others and are open-minded. Remember that this is a community we build together.</li>
+        </ul>
+        </p>
+        <p>Visit our <a href="https://github.com/coddicat/GooCollage/wiki">GitHub Wiki</a> for documentation and answers to frequently asked questions</p>
+        <p>
+          Or send us
           <a href="mailto:coddicat@gmail.com">an Email</a>
         </p>
       </q-card-section>
