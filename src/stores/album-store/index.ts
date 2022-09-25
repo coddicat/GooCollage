@@ -163,8 +163,8 @@ export const useAlbumStore = defineStore('grid', {
       }
 
       const albumId = this.albumId;
-      this.clearData();
       this.destroy();
+      this.clearData();
 
       try {
         this.savingIndicator = true;
@@ -222,8 +222,8 @@ export const useAlbumStore = defineStore('grid', {
     async setAlbumId(albumId: string | undefined, refresh?: boolean): Promise<void> {
       if (this.albumId === albumId && !refresh) return;
 
-      this.clearData();
       this.destroy();
+      this.clearData();
 
       this.albumId = albumId;
       if (!albumId || albumId == ADD_ALBUM_ID) return;

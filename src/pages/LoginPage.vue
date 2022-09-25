@@ -1,6 +1,6 @@
 <template>
   <q-page
-    class="login-page window-height window-width row"
+    class="login-page window-width row"
     style="
       justify-content: center;
       align-content: flex-start;
@@ -15,6 +15,7 @@
         margin: 15px 20px 0 20px;
         flex-shrink: 0;
         flex-grow: 0;
+        height: fit-content;
       "
     >
       <div style="margin: 25px">
@@ -58,6 +59,13 @@
         <li>Share the link or qrcode</li>
         <li>Watch in fullscreen mode</li>
       </ul>
+      <div
+        class="row"
+        style="justify-content: space-around; align-items: center"
+      >
+        <img src="~/assets/gooCollage1.gif" style="width: 250px" />
+        <img src="~/assets/gooCollage2.gif" style="height: 250px" />
+      </div>
     </div>
   </q-page>
 </template>
@@ -73,9 +81,10 @@ import {
 } from 'firebase/auth';
 import { mapActions, mapState } from 'pinia';
 import { useAuthStore } from 'stores/auth-store';
-import { Dialog, Loading, QSpinnerGrid } from 'quasar';
+import { Loading, QSpinnerGrid } from 'quasar';
 import googleApp, { getRedirectUrl } from '../google';
 import { getCurrentUser } from '../firebase';
+import dialogExt from 'src/extensions/dialog-ext';
 
 const auth = getAuth();
 
@@ -117,12 +126,9 @@ export default defineComponent({
     }),
     async continuteLogin(code: string, scope: string | undefined) {
       if (!scope || !scope.includes('photoslibrary.readonly')) {
-        Dialog.create({
-          title: 'Access',
-          dark: true,
-          message:
-            "Grant 'View your Google Photos library' access for the application",
-        });
+        dialogExt.invalidAccess(
+          "Grant 'View your Google Photos library' access for the application"
+        );
         return;
       }
 
@@ -133,11 +139,7 @@ export default defineComponent({
         await this.$router.replace({ name: 'Home' });
       } catch (error) {
         console.error(error);
-        Dialog.create({
-          dark: true,
-          title: 'Invalid access',
-          message: 'Something wrong, try again',
-        });
+        dialogExt.invalidAccess();
       }
     },
     async firebaseSignin(
@@ -171,11 +173,7 @@ export default defineComponent({
         const response = await googleApp.signin();
 
         if (!response.code) {
-          Dialog.create({
-            dark: true,
-            title: 'Invalid access',
-            message: 'Something wrong, try again',
-          });
+          dialogExt.invalidAccess();
           return;
         }
 
