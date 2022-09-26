@@ -40,9 +40,7 @@ export default {
     if (!state.unsubCache) {
       promises.push(snapshots.snapshotCache(state, albumId));
     }
-    console.log('start onAlbumOwner');
     await Promise.all(promises);
-    console.log('finish onAlbumOwner');
 
     state.albumResult = {
       success: true,
@@ -58,9 +56,7 @@ export default {
     if (!state.unsubCache) {
       promises.push(snapshots.snapshotCache(state, albumId));
     }
-    console.log('start onPublicNoPassword');
     await Promise.all(promises);
-    console.log('finish onPublicNoPassword');
     state.albumResult = {
       success: true,
       passwordRequest: false
@@ -96,9 +92,8 @@ export default {
       if (!state.unsubCache) {
         promises.push(snapshots.snapshotCache(state, albumId));
       }
-      console.log('start onPublicRequiredPassword');
+
       await Promise.all(promises);
-      console.log('finish onPublicRequiredPassword');
 
       state.albumResult = {
         success: true,

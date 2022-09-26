@@ -1,7 +1,9 @@
 import { Dialog } from 'quasar';
 import { useAuthStore } from '../stores/auth-store';
+import browseAlbumHtml from '!!raw-loader!./browse-albums-notify.html';
+import publicAlbumHtml from '!!raw-loader!./public-album-notify.html';
 
-function inform(key: string, title: string, message: string): Promise<boolean> {
+function inform(key: string, title: string | undefined, message: string, html?: boolean, cancel?: boolean): Promise<boolean> {
   const authStore = useAuthStore();
   const uid = authStore.getFbUser?.uid;
   return new Promise(resolve => {
@@ -14,9 +16,9 @@ function inform(key: string, title: string, message: string): Promise<boolean> {
     }
 
     Dialog.create({
-      dark: true,
       title,
       message,
+      html,
       options: {
         type: 'checkbox',
         model: [],
@@ -24,7 +26,7 @@ function inform(key: string, title: string, message: string): Promise<boolean> {
           { label: "Don't notify next time", value: 'cancelNotify' },
         ],
       },
-      cancel: true,
+      cancel: cancel ?? true,
     })
       .onOk((data) => {
         if (data && data.length > 0 && data[0] == 'cancelNotify') {
@@ -81,7 +83,18 @@ export default {
   publicAlbum(): Promise<boolean> {
     return inform(
       'public_cancelNotify',
-      'Make the album public, are you sure?', 'Attention, it is possible to automatically add unwanted photos to the public album, this Google\'s feature is called "Live Albums" with the ability of Google Photos to automatically detect people and pets in photos and automatically add any photo of a person, several people or pets to the album.'
+      undefined,
+      publicAlbumHtml,
+      true
+    );
+  },
+  browseAlbum(): Promise<boolean> {
+    return inform(
+      'browse_album_cancelNotify',
+      undefined,//'Make the album public, are you sure?',
+      browseAlbumHtml,
+      true,
+      false,
     );
   },
   invalidAccess(message?: string): void {
@@ -116,5 +129,14 @@ export default {
       message:
         'Some media items from the album could not be downloaded, needed to Sync with Google Album',
     });
-  }
+  },
+  // syncMediaItemsFailed(owner: boolean): void {
+  //   Dialog.create({
+  //     dark: true,
+  //     message:
+  //       owner
+  //         ? 'Sync media items with Google album has been failed. Try to authorize a new GOOGLE access.'
+  //         : 'Sync media items with Google album has been failed. Contact with the Album\'s owner.'
+  //   });
+  // }
 }

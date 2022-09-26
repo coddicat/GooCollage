@@ -16,12 +16,10 @@ export default async function (albumId: string | undefined): Promise<void> {
       spinner: QSpinnerGrid,
       spinnerColor: 'yellow',
     });
-    console.log('syncMediaItems start');
     await syncMediaItems({ albumId });
   } catch (error) {
-    console.error(error);
+    throw error;
   } finally {
     Loading.hide();
-    console.log('syncMediaItems finish');
   }
 }

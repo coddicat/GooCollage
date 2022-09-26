@@ -27,6 +27,7 @@ import { useAlbumStore } from 'stores/album-store';
 import { GoogleAlbumInfo } from 'src/types';
 import { useAuthStore } from 'src/stores/auth-store';
 import AlbumsBrowserItem from '../components/AlbumsBrowserItem.vue';
+import dialogExt from 'src/extensions/dialog-ext';
 const functions = getFunctions(firebaseApp);
 const getGoogleAlbums = httpsCallable(functions, 'getGoogleAlbums');
 
@@ -97,6 +98,7 @@ export default defineComponent({
         this.nextPageToken = data.nextPageToken;
       } finally {
         Loading.hide();
+        await dialogExt.browseAlbum();
       }
     },
   },
