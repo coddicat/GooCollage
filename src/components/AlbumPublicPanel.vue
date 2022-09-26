@@ -8,7 +8,7 @@
       v-model="password"
       dense
       :type="isPwd ? 'password' : 'text'"
-      label="Password"
+      label="Secret"
       :disable="disabled"
     >
       <template v-slot:append>
