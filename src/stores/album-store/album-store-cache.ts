@@ -44,7 +44,7 @@ export default async function cacheImages(state: AlbumState): Promise<boolean> {
       spinner: QSpinnerGrid,
       spinnerColor: 'green',
     });
-    console.log('start cache');
+
     const result = await Promise.all(promises);
     if (result.length == 0 || result.filter(x => x).length > result.filter(x => !x).length) {
       res = true;
@@ -53,7 +53,6 @@ export default async function cacheImages(state: AlbumState): Promise<boolean> {
     console.error(error);
     res = false;
   } finally {
-    console.log('finish cache');
     Loading.hide();
   }
   return res;

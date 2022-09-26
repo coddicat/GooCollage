@@ -38,9 +38,19 @@
       </q-btn>
       <p class="text-center login-page__disclaimer">
         By continuing, you are indicating that you accept our
-        <a class="login-page__link" href="#">Terms of Service</a>
+        <a
+          class="login-page__link"
+          href="https://www.termsofservicegenerator.net/live.php?token=9ggAXY3UvRvB0s7Kw3qmkK1A25mkUOyz"
+          target="_blank"
+          >Terms of Service</a
+        >
         and
-        <a class="login-page__link" href="#">Privacy Policy</a>.
+        <a
+          class="login-page__link"
+          href="https://www.privacypolicygenerator.info/live.php?token=PENTeaQqCS7u5VJnphXzYsxrv5yK6SB1"
+          target="_blank"
+          >Privacy Policy</a
+        >.
       </p>
     </q-card>
     <div
@@ -156,7 +166,7 @@ export default defineComponent({
           );
           return response;
         } catch (error) {
-          console.log(error);
+          console.error(error);
           //throw error;
         }
       }

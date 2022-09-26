@@ -16,7 +16,7 @@
       <q-card-section>
         <p>
           We’re using
-          <a href="https://github.com/coddicat/GooCollage/discussions">
+          <a href="https://github.com/coddicat/GooCollage/discussions" target="_blank">
             Github Discussions
           </a>
           as a place to connect with other members of our community. We hope
@@ -28,10 +28,10 @@
             <li>Welcome others and are open-minded. Remember that this is a community we build together.</li>
         </ul>
         </p>
-        <p>Visit our <a href="https://github.com/coddicat/GooCollage/wiki">GitHub Wiki</a> for documentation and answers to frequently asked questions</p>
+        <p>Visit our <a href="https://github.com/coddicat/GooCollage/wiki" target="_blank">GitHub Wiki</a> for documentation and answers to frequently asked questions</p>
         <p>
           Or send us
-          <a href="mailto:coddicat@gmail.com">an Email</a>
+          <a href="mailto:goocollage@gmail.com" target="_blank">an Email goocollage@gmail.com</a>
         </p>
       </q-card-section>
     </q-card>

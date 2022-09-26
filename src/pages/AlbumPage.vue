@@ -32,7 +32,7 @@
       <q-card-section>
         <div style="font-size: 20px">
           <q-icon name="error" color="negative" size="md"></q-icon>
-          The album has been deleted or ceased to be public
+          <span> The album has been deleted or ceased to be public. </span>
         </div>
       </q-card-section>
     </q-card>

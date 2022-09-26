@@ -27,13 +27,21 @@
           </p>
           <p>
             If you have any questions or issues, please contact our
-            <a href="https://github.com/coddicat/GooCollage/discussions"
+            <a
+              href="https://github.com/coddicat/GooCollage/discussions"
+              target="_blank"
               >Discussions</a
             >
             and
-            <a href="https://github.com/coddicat/GooCollage/wiki">Wiki</a>
+            <a
+              href="https://github.com/coddicat/GooCollage/wiki"
+              target="_blank"
+              >Wiki</a
+            >
             for help, or send us
-            <a href="mailto:coddicat@gmail.com">an Email</a>
+            <a href="mailto:goocollage@gmail.com" target="_blank"
+              >an Email goocollage@gmail.com</a
+            >
           </p>
         </q-item-section>
       </q-item>

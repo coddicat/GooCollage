@@ -25,7 +25,7 @@ export default {
     try {
       const collPublic = collection(db, 'public') as CollectionReference<Public>;
       const refPublic = doc<Public>(collPublic, albumId);
-      console.log('snapshotPublic start');
+
       const result = await new Promise<void>((resolve, reject) => {
         state.unsubPublic = onSnapshot<Public>(refPublic, async (snapshot: DocumentSnapshot<Public>) => {
           try {
@@ -58,15 +58,13 @@ export default {
         passwordRequest: false
       }
       throw (error);
-    } finally {
-      console.log('snapshotPublic finish');
     }
   },
 
   async snapshotAccess(state: AlbumState, albumId: string, uid: string): Promise<void> {
     const collAccesses = collection(db, `public/${albumId}/accesses`) as CollectionReference<AlbumAccess>;
     const refAccess = doc<AlbumAccess>(collAccesses, uid);
-    console.log('snapshotAccess start');
+
     await new Promise<void>((resolve, reject) => {
       state.unsubAccess = onSnapshot<AlbumAccess>(refAccess, async (snapshot: DocumentSnapshot<AlbumAccess>) => {
         try {
@@ -81,13 +79,12 @@ export default {
         reject(error);
       });
     });
-    console.log('snapshotAccess finish');
   },
 
   async snapshotPassword(state: AlbumState, albumId: string): Promise<void> {
     const collPassw = collection(db, `albums/${albumId}/secrets`) as CollectionReference<{ value: string }>;
     const refPassw = doc<{ value: string }>(collPassw, 'password');
-    console.log('snapshotPassword start');
+
     const result = await new Promise<void>((resolve, reject) => {
       state.unsubPassword = onSnapshot<{ value: string }>(refPassw, (snapshot: DocumentSnapshot<{ value: string }>) => {
         state.password = snapshot.exists() ? snapshot.data().value : undefined;
@@ -97,14 +94,13 @@ export default {
         reject(error)
       });
     });
-    console.log('snapshotPassword finish');
+
     return result;
   },
 
   async snapshotAlbum(state: AlbumState, albumId: string): Promise<void> {
     const collAlbum = collection(db, 'albums') as CollectionReference<Album>;
     const refAlbum = doc<Album>(collAlbum, albumId);
-    console.log('snapshotAlbum start');
     const result = await new Promise<void>((resolve, reject) => {
       state.unsubAlbum = onSnapshot<Album>(refAlbum, async (snapshot: DocumentSnapshot<Album>) => {
         if (!snapshot.exists()) {
@@ -129,14 +125,12 @@ export default {
         reject(error);
       });
     });
-    console.log('snapshotAlbum finish');
     return result;
   },
 
   async snapshotCache(state: AlbumState, albumId: string): Promise<void> {
     const collCache = collection(db, 'cache') as CollectionReference<CachedAlbum>;
     const refCache = doc<CachedAlbum>(collCache, albumId);
-    console.log('snapshotCache start');
     await new Promise<void>((resolve, reject) => {
       state.unsubCache = onSnapshot<CachedAlbum>(refCache, async (snapshot: DocumentSnapshot<CachedAlbum>) => {
         try {
@@ -169,7 +163,6 @@ export default {
         reject(error);
       });
     });
-    console.log('snapshotCache finish');
     return;
   },
 }

@@ -100,8 +100,7 @@ export const useAlbumStore = defineStore('grid', {
     },
 
     async syncMediaItems(): Promise<void> {
-
-      await syncMediaItems(this.albumId);
+      return syncMediaItems(this.albumId);
     },
 
     async addAlbum(googleAlbumId: string, albumName: string): Promise<string | undefined> {
