@@ -255,11 +255,16 @@ export const useAlbumStore = defineStore('grid', {
         if (!authStore.fbUser) {
           return;
         }
+        const uid = authStore.fbUser.uid;
+        if (uid != this.albumUid) {
+          return;
+        }
 
         const ref = doc(db, 'public', this.albumId);
         await setDoc(ref, {
           name: this.getAlbumName,
           status: value,
+          uid
         }, { merge: true });
 
       } finally {
@@ -294,6 +299,7 @@ export const useAlbumStore = defineStore('grid', {
       this.properties = undefined;
       this.items = [];
       this.cachedAlbum = undefined;
+      this.albumResult = undefined;
     },
 
     destroy(): void {

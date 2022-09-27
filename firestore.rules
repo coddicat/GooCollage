@@ -5,6 +5,10 @@ service cloud.firestore {
     	let album = get(/databases/$(database)/documents/albums/$(albumId)).data;
     	return album.uid == uid;
     }
+    function isAlbumOwnerAfter(albumId, uid) {
+    	let album = getAfter(/databases/$(database)/documents/albums/$(albumId)).data;
+    	return album.uid == uid;
+    }
     function getAccess(albumId, uid) {
     	let access = get(/databases/$(database)/documents/public/$(albumId)/accesses/$(uid)).data;
       return access;
@@ -33,9 +37,13 @@ service cloud.firestore {
 		match /public/{albumId} {
 			allow read; //anyone
       allow create: if request.auth != null
-        && isAlbumOwner(albumId, request.auth.uid);
+        && isAlbumOwner(albumId, request.auth.uid)
+        && request.resource.data.uid == request.auth.uid
+        && verifyFields(request.resource.data, ['name', 'status', 'uid'], ['password', 'version'])
       allow update: if request.auth != null
-        && isAlbumOwner(albumId, request.auth.uid);
+        && isAlbumOwner(albumId, request.auth.uid)
+        && request.resource.data.uid == request.auth.uid
+        && verifyFields(request.resource.data, ['name', 'status', 'uid'], ['password', 'version']);
       allow delete: if request.auth != null
         && isAlbumOwner(albumId, request.auth.uid);
 
@@ -89,14 +97,16 @@ service cloud.firestore {
       	allow read: if request.auth != null
         	&& isAlbumOwner(albumId, request.auth.uid);
         allow write: if request.auth != null
+          && isAlbumOwnerAfter(albumId, request.auth.uid)
         	&& verifyFields(request.resource.data, ['albumId'], []);
       }
 
     	match /secrets/password {
       	allow read: if request.auth != null
         	&& isAlbumOwner(albumId, request.auth.uid);
-        allow write: if request.auth != null;
-        	//&& verifyFields(request.resource.data, ['value'], []);
+        allow write: if request.auth != null
+        	&& isAlbumOwner(albumId, request.auth.uid)
+          && verifyFields(request.resource.data, ['value'], []);
       }
 		}
   }
