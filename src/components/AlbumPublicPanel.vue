@@ -13,6 +13,12 @@
     >
       <template v-slot:append>
         <q-icon
+          v-if="!!password"
+          name="close"
+          @click="password = ''"
+          class="cursor-pointer"
+        />
+        <q-icon
           :name="isPwd ? 'visibility_off' : 'visibility'"
           class="cursor-pointer"
           :disable="disabled"
