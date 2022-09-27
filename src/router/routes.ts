@@ -27,6 +27,19 @@ const routes: RouteRecordRaw[] = [
     }],
   },
   {
+    path: '/about',
+    component: () => import('layouts/EmptyLayout.vue'),
+    meta: {
+      public: true,
+    },
+    children: [{
+      path: '',
+      name: 'About',
+      component: () => import('pages/AboutPage.vue'),
+      meta: { public: true }
+    }],
+  },
+  {
     path: '/login',
     component: () => import('layouts/EmptyLayout.vue'),
     meta: {
@@ -34,6 +47,7 @@ const routes: RouteRecordRaw[] = [
     },
     children: [{
       path: '',
+      name: 'Login',
       component: () => import('pages/LoginPage.vue'),
       meta: { public: true }
     }],
