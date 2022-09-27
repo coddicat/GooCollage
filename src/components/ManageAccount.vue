@@ -16,6 +16,12 @@
             </q-item-section>
           </q-item>
           <q-separator />
+          <q-item clickable :to="{ name: 'About' }">
+            <q-item-section>About</q-item-section>
+            <q-item-section side>
+              <q-icon name="info"></q-icon>
+            </q-item-section>
+          </q-item>
           <q-item clickable @click="helpFeedback = true">
             <q-item-section>Help & Feedback</q-item-section>
             <q-item-section side>

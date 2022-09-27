@@ -38,17 +38,11 @@
       </q-btn>
       <p class="text-center login-page__disclaimer">
         By continuing, you are indicating that you accept our
-        <a
-          class="login-page__link"
-          href="https://www.termsofservicegenerator.net/live.php?token=9ggAXY3UvRvB0s7Kw3qmkK1A25mkUOyz"
-          target="_blank"
+        <a class="login-page__link" href="./termsOfService.html" target="_blank"
           >Terms of Service</a
         >
         and
-        <a
-          class="login-page__link"
-          href="https://www.privacypolicygenerator.info/live.php?token=PENTeaQqCS7u5VJnphXzYsxrv5yK6SB1"
-          target="_blank"
+        <a class="login-page__link" href="./privacyPolicy.html" target="_blank"
           >Privacy Policy</a
         >.
       </p>
@@ -64,11 +58,21 @@
         <li>Sign in with Google</li>
         <li>Grand access to read your albums content</li>
         <li>Select any album from your google library</li>
-        <li>Setup your collage</li>
+        <li>Adjust your collage</li>
         <li>Make it public</li>
         <li>Share the link or qrcode</li>
-        <li>Watch in fullscreen mode</li>
+        <li>Watch it in fullscreen mode</li>
+        <q-btn
+          outline
+          rounded
+          label="About"
+          icon="info"
+          color="primary"
+          class="q-mt-xs"
+          :to="{ name: 'About' }"
+        ></q-btn>
       </ul>
+
       <div
         class="row"
         style="justify-content: space-around; align-items: center"

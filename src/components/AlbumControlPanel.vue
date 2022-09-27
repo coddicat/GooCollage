@@ -104,7 +104,7 @@ export default defineComponent({
             spinnerColor: 'negative',
           });
           await store.deleteAlbum();
-          await router.replace('/');
+          await router.replace({ name: 'Home' });
           notifyExt.albumDeleted();
         } finally {
           Loading.hide();
