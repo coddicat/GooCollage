@@ -3,7 +3,7 @@
     <q-card-section>
       <div class="q-mb-md" style="font-size: 20px">
         <q-icon name="warning" color="warning" size="md"></q-icon>
-        The album requires a password:
+        The album requires a secret:
       </div>
 
       <q-input

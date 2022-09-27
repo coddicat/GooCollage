@@ -89,7 +89,7 @@ export default defineComponent({
         set: (password: string) => setPassword(password),
       }),
       qrcode: computed(() => {
-        const uri = `https://enqueuecard.web.app/${store.getAlbumId}`;
+        const uri = `${location.origin}/${store.getAlbumId}`;
         return uri;
       }),
       disabled: computed(
