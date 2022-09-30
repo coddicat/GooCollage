@@ -20,6 +20,15 @@
           class="q-ma-sm"
         />
         <q-btn
+          v-if="availableRefresh"
+          dense
+          flat
+          round
+          icon="refresh"
+          @click="refresh"
+        >
+        </q-btn>
+        <q-btn
           v-if="availableFullscreen"
           dense
           flat
@@ -81,6 +90,9 @@ export default defineComponent({
     availableFullscreen() {
       return this.$route.name == 'Home' && !mobileAndTabletCheck();
     },
+    availableRefresh() {
+      return this.$route.name == 'AlbumsBrowser';
+    },
   },
   setup() {
     const $q = useQuasar();
@@ -93,6 +105,11 @@ export default defineComponent({
         await $q.fullscreen.toggle(target);
       },
     };
+  },
+  methods: {
+    refresh() {
+      this.emitter.emit('refresh');
+    },
   },
 });
 </script>
