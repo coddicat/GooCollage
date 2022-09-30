@@ -21,6 +21,7 @@
     "firebase": "^9.10.0",
     "jwt-decode": "^3.1.2",
     "lodash": "^4.17.21",
+    "mitt": "^3.0.0",
     "pinia": "^2.0.11",
     "qrcode.vue": "^3.3.3",
     "quasar": "^2.8.3",

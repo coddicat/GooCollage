@@ -1,6 +1,6 @@
 <template>
   <q-page class="column q-pa-md items-start">
-    <div class="row items-start">
+    <div v-if="googleAlbums && googleAlbums.length > 0" class="row items-start">
       <AlbumsBrowserItem
         v-for="googleAlbum in googleAlbums"
         :key="googleAlbum.id"
@@ -11,6 +11,24 @@
         :disabled="googleIds.indexOf(googleAlbum.id) >= 0"
         @select="handler(googleAlbum)"
       ></AlbumsBrowserItem>
+    </div>
+    <div v-else-if="!loading">
+      <span
+        >The list of albums is empty, create albums in your Google Photo account
+        using the link -
+      </span>
+      <a href="https://photos.google.com/albums" target="_blank"
+        >https://photos.google.com/albums</a
+      >
+      <div class="q-ma-sx">
+        <q-btn
+          flat
+          label="Refresh"
+          icon="refresh"
+          color="primary"
+          @click="refresh"
+        ></q-btn>
+      </div>
     </div>
     <div v-if="nextPageToken" class="flex full-width flex-center col-shrink">
       <q-btn color="primary" @click="loadHandler"> Load more </q-btn>
@@ -41,6 +59,7 @@ export default defineComponent({
     const nextPageToken = ref(undefined as string | undefined);
 
     return {
+      loading: ref(true),
       googleAlbums,
       nextPageToken,
       googleIds: ref([] as string[]),
@@ -52,17 +71,28 @@ export default defineComponent({
         message: 'Please stand by',
         spinner: QSpinnerGrid,
       });
+      this.emitter.on('refresh', this.refresh);
       const authStore = useAuthStore();
       this.googleIds = await authStore.loadGooglesAlbumIds();
     } catch {
       Loading.hide();
+    } finally {
+      await this.loadHandler();
+      await dialogExt.browseAlbum();
     }
-    await this.loadHandler();
+  },
+  unmounted() {
+    this.emitter.off('refresh', this.refresh);
   },
   methods: {
     ...mapActions(useAlbumStore, {
       addAlbum: 'addAlbum',
     }),
+    refresh() {
+      this.googleAlbums = [];
+      this.nextPageToken = undefined;
+      this.loadHandler();
+    },
     async handler(googleAlbum: { id: string; title: string }) {
       try {
         Loading.show({
@@ -87,6 +117,7 @@ export default defineComponent({
           message: 'Please stand by',
           spinner: QSpinnerGrid,
         });
+        this.loading = true;
         const response = await getGoogleAlbums({
           nextPageToken: this.nextPageToken,
         });
@@ -98,7 +129,7 @@ export default defineComponent({
         this.nextPageToken = data.nextPageToken;
       } finally {
         Loading.hide();
-        await dialogExt.browseAlbum();
+        this.loading = false;
       }
     },
   },

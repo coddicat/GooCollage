@@ -56,7 +56,10 @@ const routes: RouteRecordRaw[] = [
     path: '/albums',
     component: () => import('layouts/MainLayout.vue'),
     children: [{
-      path: '', component: () => import('pages/AlbumsBrowserPage.vue'), beforeEnter:
+      name: 'AlbumsBrowser',
+      path: '',
+      component: () => import('pages/AlbumsBrowserPage.vue'),
+      beforeEnter:
         (_, __, next: NavigationGuardNext) => {
           const albumStore = useAlbumStore();
           albumStore.setAlbumId(ADD_ALBUM_ID);
