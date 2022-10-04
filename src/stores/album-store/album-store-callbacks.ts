@@ -30,6 +30,8 @@ export default {
   },
 
   async onAlbumOwner(state: AlbumState, albumId: string): Promise<void> {
+    console.log('onAlbumOwner start');
+
     const promises = [];
     if (!state.unsubPassword) {
       promises.push(snapshots.snapshotPassword(state, albumId));
@@ -46,6 +48,8 @@ export default {
       success: true,
       passwordRequest: false
     };
+
+    console.log('onAlbumOwner end');
   },
 
   async onPublicNoPassword(state: AlbumState, albumId: string): Promise<void> {
@@ -113,11 +117,14 @@ export default {
       this.onAccessDenied(state, false);
       return;
     }
+    console.log('onForeign start');
 
     if (!!state.public?.password) {
       await this.onPublicRequiredPassword(state, albumId);
     } else {
       await this.onPublicNoPassword(state, albumId);
     }
+
+    console.log('onForeign end');
   },
 }

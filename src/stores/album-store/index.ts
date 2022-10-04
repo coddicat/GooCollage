@@ -227,7 +227,11 @@ export const useAlbumStore = defineStore('grid', {
       this.albumId = albumId;
       if (!albumId || albumId == ADD_ALBUM_ID) return;
 
+      console.log('setAlbumId start');
+
       await snapshots.snapshotPublic(this.$state, albumId);
+
+      console.log('setAlbumId end');
     },
 
     async setProperty<T>(propName: propertyName, propValue: T): Promise<void> {

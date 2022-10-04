@@ -11,6 +11,8 @@ export default async function (albumId: string | undefined): Promise<void> {
     return;
   }
   try {
+    console.log('syncmedia start');
+
     Loading.show({
       message: 'Sync media items.',
       spinner: QSpinnerGrid,
@@ -21,5 +23,6 @@ export default async function (albumId: string | undefined): Promise<void> {
     throw error;
   } finally {
     Loading.hide();
+    console.log('syncmedia end');
   }
 }

@@ -4,23 +4,37 @@
     :key="transition"
   >
     <template v-if="albumResult?.success && !albumResult?.passwordRequest">
-      <div
-        v-for="row in portrait ? columns : rows"
-        :key="row"
-        class="row items-stretch justify-evenly no-wrap col-grow"
-      >
-        <AlbumMediaItem
-          v-for="col in portrait ? rows : columns"
-          :key="`${col}_${row}`"
-          :item="portrait ? getCard(row, col) : getCard(col, row)"
-          :cache="cache"
-          :transition="getTransition()"
-          :fit="fit"
-          @click="portrait ? clickHandler(row, col) : clickHandler(col, row)"
+      <template v-if="!!items && items.length > 0">
+        <div
+          v-for="row in portrait ? columns : rows"
+          :key="row"
+          class="row items-stretch justify-evenly no-wrap col-grow"
         >
-        </AlbumMediaItem>
-      </div>
-      <ViewMediaItemDialog v-model="dialogItem"> </ViewMediaItemDialog>
+          <AlbumMediaItem
+            v-for="col in portrait ? rows : columns"
+            :key="`${col}_${row}`"
+            :item="portrait ? getCard(row, col) : getCard(col, row)"
+            :cache="cache"
+            :transition="getTransition()"
+            :fit="fit"
+            @click="portrait ? clickHandler(row, col) : clickHandler(col, row)"
+          >
+          </AlbumMediaItem>
+        </div>
+        <ViewMediaItemDialog v-model="dialogItem"> </ViewMediaItemDialog>
+      </template>
+      <template v-else>
+        <div class="absolute-center">
+          <span class="text-subtitle1"
+            >The album is empty. Go to your Google Photo account
+            <a href="https://photos.google.com/albums" target="_blank"
+              >https://photos.google.com/albums</a
+            >
+            and add/upload first images to this album to see them here in the
+            collage</span
+          >
+        </div>
+      </template>
     </template>
     <AlbumPasswordRequest v-else-if="albumResult?.passwordRequest">
     </AlbumPasswordRequest>
