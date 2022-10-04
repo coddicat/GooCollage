@@ -12,14 +12,13 @@
         @select="handler(googleAlbum)"
       ></AlbumsBrowserItem>
     </div>
-    <div v-else-if="!loading">
-      <span
+    <div v-else-if="!loading" class="absolute-center">
+      <span class="text-subtitle1"
         >The list of albums is empty, create albums in your Google Photo account
-        using the link -
+        <a href="https://photos.google.com/albums" target="_blank"
+          >https://photos.google.com/albums</a
+        >
       </span>
-      <a href="https://photos.google.com/albums" target="_blank"
-        >https://photos.google.com/albums</a
-      >
       <div class="q-ma-sx">
         <q-btn
           flat
